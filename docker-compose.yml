@@ -1,10 +1,10 @@
 services:
   app:
     build:
-      context: ./app
-    container_name: birdwatch_app
+      context: ./birdwatch-app
+    container_name: birdwatch-app
     volumes:
-      - ./app:/var/www
+      - ./birdwatch-app:/var/www
     ports:
       - "8000:8000"
     environment:
@@ -19,7 +19,7 @@ services:
 
   db:
     image: postgres:16
-    container_name: birdwatch_db
+    container_name: birdwatch-db
     environment:
       POSTGRES_DB: birdwatch
       POSTGRES_USER: birdwatch

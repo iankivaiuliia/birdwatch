@@ -1,10 +1,10 @@
 # Laravel
-app/vendor/
-app/node_modules/
-app/.env
-app/.env.*
-!app/.env.example
-app/storage/*.key
+birdwatch-app/vendor/
+birdwatch-app/node_modules/
+birdwatch-app/.env
+birdwatch-app/.env.*
+!birdwatch-app/.env.example
+birdwatch-app/storage/*.key
 
 # Docker
 .pgdata/
@@ -16,10 +16,10 @@ pgdata/
 .vscode/
 
 # Logs & cache
-app/storage/logs/
-app/storage/framework/cache/
-app/storage/framework/sessions/
-app/storage/framework/views/
+birdwatch-app/storage/logs/
+birdwatch-app/storage/framework/cache/
+birdwatch-app/storage/framework/sessions/
+birdwatch-app/storage/framework/views/
 
 # PHPUnit
 .phpunit.result.cache
