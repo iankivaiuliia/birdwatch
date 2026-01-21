@@ -18,13 +18,18 @@ Route::get('/whoami', function (Request $request) {
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 Route::post('/auth/logout', [GoogleAuthController::class, 'logout']);
+
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return response()->noContent();
-});
+    if ($request->expectsJson()) {
+        return response()->noContent(); // 204
+    }
+
+    return redirect('/');
+})->name('logout');
 
 Route::get('/auth/google', fn () => Socialite::driver('google')->redirect()
 );
