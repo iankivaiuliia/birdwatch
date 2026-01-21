@@ -25,16 +25,16 @@ cp .env.example .env
 cp .env.testing.example .env.testing
 
 docker compose up -d
-docker exec -it birdwatch_app composer install
-docker exec -it birdwatch_app php artisan migrate
+docker exec -it birdwatch-app composer install
+docker exec -it birdwatch-app php artisan migrate
 
 TESTING
 -------
-docker exec -it birdwatch_app php artisan test
+docker exec -it birdwatch-app php artisan test
 
 CODE STYLE
 ----------
-docker exec -it birdwatch_app ./vendor/bin/pint --test
+docker exec -it birdwatch-app ./vendor/bin/pint --test
 
 AUTHOR
 ------
