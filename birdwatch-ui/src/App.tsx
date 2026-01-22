@@ -8,7 +8,7 @@ type User = {
 };
 
 const API = "http://localhost:8000";
-
+let deferredPrompt: any = null;
 // ---- API helpers ----
 
 async function fetchMe(): Promise<User | null> {
@@ -28,13 +28,11 @@ function getCookie(name: string): string | null {
 }
 
 async function logout(): Promise<void> {
-    // 1) set XSRF-TOKEN cookie
     await fetch(`${API}/sanctum/csrf-cookie`, {
         credentials: "include",
         headers: { Accept: "application/json" },
     });
 
-    // 2) read token from cookie and send it back
     const xsrf = getCookie("XSRF-TOKEN");
     if (!xsrf) throw new Error("No XSRF-TOKEN cookie found");
 
@@ -51,12 +49,30 @@ async function logout(): Promise<void> {
         throw new Error(`Logout failed: ${r.status}`);
     }
 }
+async function installApp() {
+    if (!deferredPrompt) return;
 
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+}
 // ---- React App ----
 
 export default function App() {
     const [me, setMe] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const handler = (e: any) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        };
+
+        window.addEventListener("beforeinstallprompt", handler);
+
+        return () => {
+            window.removeEventListener("beforeinstallprompt", handler);
+        };
+    }, []);
 
     useEffect(() => {
         fetchMe()
@@ -133,6 +149,11 @@ export default function App() {
                     >
                         Logout
                     </button>
+                    {deferredPrompt && (
+                        <button onClick={installApp}>
+                            Install App
+                        </button>
+                    )}
                 </div>
             )}
         </div>
